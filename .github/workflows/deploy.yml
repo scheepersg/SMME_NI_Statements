@@ -71,7 +71,7 @@ jobs:
         working-directory: ${{ steps.env.outputs.dir }}
 
       - name: Terraform Plan
-        run: terraform plan -var-file=../../terraform/terraform.tfvars -out=tfplan
+        run: terraform plan -var-file=${{ github.workspace }}/terraform/terraform.tfvars -out=tfplan
         working-directory: ${{ steps.env.outputs.dir }}
 
       - name: Terraform Apply
