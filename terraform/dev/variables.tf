@@ -22,3 +22,8 @@ variable "lambda_s3_key" {
   description = "S3 key for the Lambda function zip file"
   type        = string
 }
+
+variable "sns_email_endpoint" {
+  description = "The email endpoint for SNS notifications"
+  type        = string
+}
