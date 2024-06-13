@@ -5,7 +5,7 @@ provider "aws" {
 # Create S3 bucket (if needed)
 resource "aws_s3_bucket" "lambda_bucket" {
   bucket = var.s3_bucket
-  acl    = "private"
+  acl = "private"
 }
 
 # IAM Role for Lambda Function
@@ -106,6 +106,7 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
   lambda_function {
     lambda_function_arn = aws_lambda_function.example_lambda.arn
     events              = ["s3:ObjectCreated:*"]
+    filter_prefix       = var.lambda_s3_key
   }
 }
 
