@@ -1,8 +1,7 @@
 terraform {
   backend "s3" {
-    bucket = "your-prod-bucket"
+    bucket = "ggs-prod-bucket"  # Replace with your actual S3 bucket name
     key    = "prod/terraform.tfstate"
-    region = "your-region"
+    region = "af-south-1"  # Replace with your actual AWS region
   }
 }
-

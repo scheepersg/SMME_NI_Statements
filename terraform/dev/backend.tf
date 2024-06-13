@@ -1,9 +1,7 @@
-# terraform/dev/backend.tf
 terraform {
   backend "s3" {
-    bucket = "your-dev-bucket"
+    bucket = "ggs-dev-bucket"  # Replace with your actual S3 bucket name
     key    = "dev/terraform.tfstate"
-    region = "your-region"
+    region = "af-south-1"  # Replace with your actual AWS region
   }
 }
-
