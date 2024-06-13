@@ -66,6 +66,12 @@ resource "aws_sns_topic" "lambda_sns_topic" {
   name = var.sns_topic_name
 }
 
+resource "aws_sns_topic_subscription" "lambda_sns_subscription" {
+  topic_arn = aws_sns_topic.lambda_sns_topic.arn
+  protocol  = "email"
+  endpoint  = var.sns_email_endpoint
+}
+
 # Lambda Function
 resource "aws_lambda_function" "example_lambda" {
   function_name = var.lambda_function_name
