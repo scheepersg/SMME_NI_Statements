@@ -74,7 +74,7 @@ resource "aws_sns_topic_subscription" "lambda_sns_subscription" {
 
 # Lambda Function
 resource "aws_lambda_function" "example_lambda" {
-  function_name = var.lambda_function_name
+  #function_name = var.lambda_function_name
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.9"
   role          = aws_iam_role.lambda_exec_role.arn
