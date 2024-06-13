@@ -4,7 +4,7 @@ provider "aws" {
 
 # Create S3 bucket (if needed)
 resource "aws_s3_bucket" "lambda_bucket" {
-  bucket = var.s3_bucket
+  bucket = var.dev_s3_bucket
   acl = "private"
 }
 
@@ -48,8 +48,8 @@ resource "aws_iam_role_policy" "lambda_exec_policy" {
           "s3:ListBucket"
         ]
         Resource = [
-          "arn:aws:s3:::${var.s3_bucket}",
-          "arn:aws:s3:::${var.s3_bucket}/*"
+          "arn:aws:s3:::${var.dev_s3_bucket}",
+          "arn:aws:s3:::${var.dev_s3_bucket}/*"
         ]
       },
       {
@@ -78,7 +78,7 @@ resource "aws_lambda_function" "example_lambda" {
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.9"
   role          = aws_iam_role.lambda_exec_role.arn
-  s3_bucket     = var.s3_bucket
+  s3_bucket     = var.dev_s3_bucket
   s3_key        = var.lambda_s3_key
 
   environment {
