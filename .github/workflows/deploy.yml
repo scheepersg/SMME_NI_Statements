@@ -68,12 +68,16 @@ jobs:
 
       - name: Terraform Init
         run: terraform init -backend-config="bucket=${{ steps.env.outputs.bucket }}" -backend-config="key=${{ steps.env.outputs.key }}"
+        working-directory: ${{ steps.env.outputs.dir }}
 
       - name: Terraform Plan
         run: terraform plan -var-file=terraform/terraform.tfvars -out=tfplan
+        working-directory: ${{ steps.env.outputs.dir }}
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
+        working-directory: ${{ steps.env.outputs.dir }}
 
       - name: Verify Deployment
         run: aws lambda get-function --function-name ${{ secrets.TF_VAR_lambda_function_name }}
+        working-directory: ${{ steps.env.outputs.dir }}
