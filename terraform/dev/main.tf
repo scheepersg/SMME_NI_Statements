@@ -4,8 +4,8 @@ provider "aws" {
 
 # Create S3 bucket (if needed)
 resource "aws_s3_bucket" "lambda_bucket" {
-  bucket = var.dev_s3_bucket
-  acl = "private"
+  bucket = "ggs-devops-testing"
+  aws_s3_bucket_acl = "private"
 }
 
 # IAM Role for Lambda Function
