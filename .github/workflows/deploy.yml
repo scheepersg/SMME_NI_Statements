@@ -31,7 +31,7 @@ jobs:
         run: pip install awscli
 
       - name: Zip Lambda Function
-        run: zip -r lambda_function.zip lambda_function/
+        run: zip -r lambda_function.zip lambda_function
 
       - name: Determine Environment
         id: env
