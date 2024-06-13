@@ -79,7 +79,7 @@ resource "aws_lambda_function" "example_lambda" {
   runtime       = "python3.9"
   role          = aws_iam_role.lambda_exec_role.arn
   s3_bucket     = var.dev_s3_bucket
-  s3_key        = var.lambda_s3_key/lambda_function
+  s3_key        = var.lambda_s3_key
 
   environment {
     variables = {
