@@ -13,7 +13,7 @@ variable "sns_topic_name" {
   type        = string
 }
 
-variable "s3_bucket" {
+variable "dev_s3_bucket" {
   description = "Name of the S3 bucket for Lambda deployment"
   type        = string
 }
