@@ -31,10 +31,7 @@ jobs:
         run: pip install awscli
 
       - name: Zip Lambda Function
-        run: |
-          mkdir my_lambda_function
-          cp lambda_function/lambda_function.py my_lambda_function/
-          zip -r my_lambda_function.zip my_lambda_function/lambda_function.py
+        run: zip -r lambda_function.zip lambda_function/lambda_function.py
 
       - name: Determine Environment
         id: env
@@ -64,7 +61,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Upload Lambda to S3
-        run: aws s3 cp my_lambda_function.zip s3://${{ steps.env.outputs.bucket }}/${{ steps.env.outputs.key }}
+        run: aws s3 cp lambda_function.zip s3://${{ steps.env.outputs.bucket }}/${{ steps.env.outputs.key }}
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
