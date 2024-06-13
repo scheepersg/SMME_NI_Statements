@@ -2,34 +2,10 @@ provider "aws" {
   region = var.aws_region
 }
 
-variable "aws_region" {
-  description = "AWS region"
-  type        = string
-}
-
-variable "lambda_function_name" {
-  description = "Name of the Lambda function"
-  type        = string
-}
-
-variable "sns_topic_name" {
-  description = "Name of the SNS topic"
-  type        = string
-}
-
-variable "s3_bucket" {
-  description = "Name of the S3 bucket for Lambda deployment"
-  type        = string
-}
-
-variable "lambda_s3_key" {
-  description = "S3 key for the Lambda function zip file"
-  type        = string
-}
-
 # Create S3 bucket (if needed)
 resource "aws_s3_bucket" "lambda_bucket" {
   bucket = var.s3_bucket
+  acl = "private"
 }
 
 # IAM Role for Lambda Function
@@ -72,8 +48,8 @@ resource "aws_iam_role_policy" "lambda_exec_policy" {
           "s3:ListBucket"
         ]
         Resource = [
-          "arn:aws:s3:::${var.s3_bucket}",
-          "arn:aws:s3:::${var.s3_bucket}/*"
+          "arn:aws:s3:::${var.dev_s3_bucket}",
+          "arn:aws:s3:::${var.dev_s3_bucket}/*"
         ]
       },
       {
@@ -90,13 +66,19 @@ resource "aws_sns_topic" "lambda_sns_topic" {
   name = var.sns_topic_name
 }
 
+resource "aws_sns_topic_subscription" "lambda_sns_subscription" {
+  topic_arn = aws_sns_topic.lambda_sns_topic.arn
+  protocol  = "email"
+  endpoint  = var.sns_email_endpoint
+}
+
 # Lambda Function
 resource "aws_lambda_function" "example_lambda" {
   function_name = var.lambda_function_name
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.9"
   role          = aws_iam_role.lambda_exec_role.arn
-  s3_bucket     = var.s3_bucket
+  s3_bucket     = var.dev_s3_bucket
   s3_key        = var.lambda_s3_key
 
   environment {
@@ -124,6 +106,7 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
   lambda_function {
     lambda_function_arn = aws_lambda_function.example_lambda.arn
     events              = ["s3:ObjectCreated:*"]
+    filter_prefix       = var.lambda_s3_key
   }
 }
 

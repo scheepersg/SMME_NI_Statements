@@ -13,12 +13,22 @@ variable "sns_topic_name" {
   type        = string
 }
 
-variable "s3_bucket" {
+variable "dev_s3_bucket" {
   description = "Name of the S3 bucket for Lambda deployment"
+  type        = string
+}
+
+variable "s3_bucket" {
+  description = "Name of the S3 bucket for Lambda trigger"
   type        = string
 }
 
 variable "lambda_s3_key" {
   description = "S3 key for the Lambda function zip file"
+  type        = string
+}
+
+variable "sns_email_endpoint" {
+  description = "The email endpoint for SNS notifications"
   type        = string
 }

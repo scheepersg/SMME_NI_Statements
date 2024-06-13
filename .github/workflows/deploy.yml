@@ -41,11 +41,13 @@ jobs:
             echo "::set-output name=bucket::${{ secrets.DEV_S3_BUCKET }}"
             echo "::set-output name=role::${{ secrets.DEV_AWS_ROLE_ARN }}"
             echo "::set-output name=key::dev/lambda_function.zip"
+            echo "::set-output name=dir::terraform/dev"
           elif [[ "${GITHUB_REF}" == "refs/heads/${{ env.PROD_BRANCH }}" ]]; then
             echo "::set-output name=env::prod"
             echo "::set-output name=bucket::${{ secrets.PROD_S3_BUCKET }}"
             echo "::set-output name=role::${{ secrets.PROD_AWS_ROLE_ARN }}"
             echo "::set-output name=key::prod/lambda_function.zip"
+            echo "::set-output name=dir::terraform/prod"
           else
             echo "Invalid branch for deployment"
             exit 1
@@ -67,7 +69,7 @@ jobs:
           terraform_version: 1.3.0  # Specify your Terraform version
 
       - name: Terraform Init
-        run: terraform init -backend-config="bucket=${{ steps.env.outputs.bucket }}" -backend-config="key=${{ steps.env.outputs.key }}"
+        run: terraform init
         working-directory: ${{ steps.env.outputs.dir }}
 
       - name: Terraform Plan
@@ -80,4 +82,3 @@ jobs:
 
       - name: Verify Deployment
         run: aws lambda get-function --function-name ${{ secrets.TF_VAR_lambda_function_name }}
-        working-directory: ${{ steps.env.outputs.dir }}
